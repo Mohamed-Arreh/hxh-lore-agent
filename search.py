@@ -71,5 +71,6 @@ from langchain.agents import create_agent
 agent = create_agent(llm, [ask_question, build_dossier])
 
 # Test the agent
-response = agent.invoke({"messages": [("user", "What is Nen and how does it work?")]})
-print(response["messages"][-1].content)
+if __name__ == "__main__":
+    response = agent.invoke({"messages": [("user", "What is Nen and how does it work?")]})
+    print(response["messages"][-1].content)
