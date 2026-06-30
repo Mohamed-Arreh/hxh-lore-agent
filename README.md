@@ -6,8 +6,8 @@ An AI agent that answers questions about *Hunter × Hunter* lore. It's a tool-ca
 
 It has two tools:
 
-- **Ask a lore question** — general questions about the world, Nen, characters, how things work. It searches the lore and answers from what it finds, so it doesn't make stuff up.
-- **Build a character dossier** — give it a character name and it pulls together a profile (overview, abilities, affiliations, key events) from everything in the lore about them.
+- **Ask a lore question** : general questions about the world, Nen, characters, how things work. It searches the lore and answers from what it finds, so it doesn't make stuff up.
+- **Build a character dossier** : give it a character name and it pulls together a profile (overview, abilities, affiliations, key events) from everything in the lore about them.
 
 You don't tell it which tool to use. Ask "what is Nen?" and it runs a search; ask "give me a dossier on Killua" and it builds the profile. The model reads the question and routes it. That's the agent part.
 
