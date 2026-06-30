@@ -1,8 +1,9 @@
+from langchain_core.tools import tool
 from langchain_openai import OpenAIEmbeddings
 from langchain_anthropic import ChatAnthropic
 from langchain_chroma import Chroma
 from dotenv import load_dotenv
-question = "What is Nen?"
+
 
 load_dotenv()
 
@@ -15,7 +16,10 @@ db = Chroma(
     embedding_function=embeddings
 )
 
-def ask_question(question):
+@tool
+def ask_question(question: str) -> str:
+    """Answer a general question about the lore. Use this for any
+    question about Nen, abilities, concepts, or how things work."""
     results = db.similarity_search(question, k=3)
 
     # Combine the retrieved chunks into one block of text
@@ -34,7 +38,11 @@ def ask_question(question):
     answer = llm.invoke(prompt)
     return answer.content
 
-def build_dossier(character):
+@tool
+def build_dossier(character: str) -> str:
+    """Build a structured profile/dossier for a specific character.
+    Use this when someone asks for a character's profile, dossier,
+    background, or 'everything about' a named character."""
     results = db.similarity_search(character, k=8)
 
     context = "\n\n".join(r.page_content for r in results)
@@ -57,5 +65,11 @@ def build_dossier(character):
     return answer.content
 
 
-result = build_dossier("Killua")
-print(result)
+from langchain.agents import create_agent
+
+# Create the agent: give it the LLM and the list of tools
+agent = create_agent(llm, [ask_question, build_dossier])
+
+# Test the agent
+response = agent.invoke({"messages": [("user", "What is Nen and how does it work?")]})
+print(response["messages"][-1].content)
