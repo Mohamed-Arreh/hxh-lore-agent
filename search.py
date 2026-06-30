@@ -34,6 +34,28 @@ def ask_question(question):
     answer = llm.invoke(prompt)
     return answer.content
 
+def build_dossier(character):
+    results = db.similarity_search(character, k=8)
 
-result = ask_question("What is Nen?")
+    context = "\n\n".join(r.page_content for r in results)
+
+    prompt = f"""Build a character dossier using ONLY the context below.
+    Organize it into these sections:
+    - Overview
+    - Abilities / Nen
+    - Affiliations
+    - Key Events
+
+    If a section has no information in the context, write "Not specified in available lore."
+
+    Context:
+    {context}
+
+    Character: {character}"""
+
+    answer = llm.invoke(prompt)
+    return answer.content
+
+
+result = build_dossier("Killua")
 print(result)
